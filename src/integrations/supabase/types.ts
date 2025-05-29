@@ -9,7 +9,189 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      businesses: {
+        Row: {
+          address: string | null
+          business_name: string
+          business_type: string | null
+          created_at: string | null
+          id: string
+          phone: string | null
+          reward_description: string | null
+          updated_at: string | null
+          user_id: string | null
+          visits_required_for_reward: number | null
+        }
+        Insert: {
+          address?: string | null
+          business_name: string
+          business_type?: string | null
+          created_at?: string | null
+          id?: string
+          phone?: string | null
+          reward_description?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          visits_required_for_reward?: number | null
+        }
+        Update: {
+          address?: string | null
+          business_name?: string
+          business_type?: string | null
+          created_at?: string | null
+          id?: string
+          phone?: string | null
+          reward_description?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          visits_required_for_reward?: number | null
+        }
+        Relationships: []
+      }
+      customers: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string | null
+          phone: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name?: string | null
+          phone: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string | null
+          phone?: string
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          business_id: string | null
+          comment: string | null
+          created_at: string | null
+          customer_id: string | null
+          id: string
+          rating: number | null
+        }
+        Insert: {
+          business_id?: string | null
+          comment?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          id?: string
+          rating?: number | null
+        }
+        Update: {
+          business_id?: string | null
+          comment?: string | null
+          created_at?: string | null
+          customer_id?: string | null
+          id?: string
+          rating?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rewards: {
+        Row: {
+          business_id: string | null
+          customer_id: string | null
+          earned_date: string | null
+          id: string
+          is_redeemed: boolean | null
+          redeemed_date: string | null
+        }
+        Insert: {
+          business_id?: string | null
+          customer_id?: string | null
+          earned_date?: string | null
+          id?: string
+          is_redeemed?: boolean | null
+          redeemed_date?: string | null
+        }
+        Update: {
+          business_id?: string | null
+          customer_id?: string | null
+          earned_date?: string | null
+          id?: string
+          is_redeemed?: boolean | null
+          redeemed_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rewards_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rewards_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      visits: {
+        Row: {
+          business_id: string | null
+          customer_id: string | null
+          id: string
+          notes: string | null
+          visit_date: string | null
+        }
+        Insert: {
+          business_id?: string | null
+          customer_id?: string | null
+          id?: string
+          notes?: string | null
+          visit_date?: string | null
+        }
+        Update: {
+          business_id?: string | null
+          customer_id?: string | null
+          id?: string
+          notes?: string | null
+          visit_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visits_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visits_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +200,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_type: "business" | "customer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +315,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_type: ["business", "customer"],
+    },
   },
 } as const
